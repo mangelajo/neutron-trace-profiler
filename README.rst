@@ -6,6 +6,17 @@ This code is enabled in neutron server as service plugin and in agents(l2 and l3
 This is not enabled for dhcp agent as agent extensions are not enabled in dhcp agent.
 
 
+Creating a session via neutron API:
+
+    curl http://ip-address:9696/v2.0/profilingsessions.json -g -i -X POST \
+        -H "Content-Type: application/json"  -H "Accept: application/json"
+        -d '{"profilingsession": {"id": "abcdefg", "flags": "*"}}
+
+Listing active sessions
+    curl http://ip-address:9696/v2.0/profilingsessions.json
+
+
+
 Changes needed in neutron.conf(till devstack plugin enabled to do these changes):
 
 # This will enable Trace profiler to regsiter for process 'AFTER_INIT' event.

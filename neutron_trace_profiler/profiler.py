@@ -11,6 +11,9 @@ from neutron.services import service_base
 from neutron_trace_profiler import extensions as ntp_extensions
 from oslo_config import cfg
 
+from rpc_api import profiling
+
+
 
 LOG = logging.getLogger(__name__)
 
@@ -51,6 +54,7 @@ class Profiler(service_base.ServicePluginBase):
             self.subscribe()
 
         self._sessions = {}
+        self._rpc = profiling.ProfilingBroadcastRpcApi()
 
     @classmethod
     def get_plugin_type(cls):
@@ -83,12 +87,12 @@ class Profiler(service_base.ServicePluginBase):
             raise "duplicated"
         else:
             # make sure there's no other session running already
+            self._rpc.start_profiling(context, id, profiling_session)
             self._sessions[id] = profiling_session
 
         return profiling_session
 
     def delete_profilingsession(self, context, id):
-
         pass
 
     def update_profilingsession(self, context, id, profilingsession):
